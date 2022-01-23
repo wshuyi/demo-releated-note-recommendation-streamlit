@@ -158,7 +158,7 @@ default_tag_white_list = ['zk']
 default_tag_black_list = ['private']
 default_keywords_list = []
 local_models = Path("local_models.pickle")
-roam_json = "/Users/wsy/Dropbox/roam-bak/roamnotes/json/roamwsy.json"
+roam_json = "demo.json"
 with open(roam_json) as f:
     mygraph = json.load(f)
 
