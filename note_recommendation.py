@@ -158,9 +158,7 @@ default_tag_white_list = ['zk']
 default_tag_black_list = ['private']
 default_keywords_list = []
 local_models = Path("local_models.pickle")
-roam_json = "demo.json"
-with open(roam_json) as f:
-    mygraph = json.load(f)
+roam_json_default = "demo.json"
 
 extracted_dict_cache = "extracted_dict.pickle"
 if Path(extracted_dict_cache).exists():
@@ -179,6 +177,7 @@ else:
 
 default_string = "Python 真是一种非常好的胶水语言，可以把各种模块串联起来，形成合力。脚本写作可以增强系统的自动化啊！"
 mystr = st.text_area("这里输入你的新内容：", default_string)
+roam_json = st.text_input("Roam JSON Path: ", roam_json_default)
 unhandled_tag_white_list = st.text_input("Tags in the white list:", ','.join(default_tag_white_list)).split(',')
 unhandled_tag_black_list = st.text_input("Tags in the black list:", ','.join(default_tag_black_list)).split(',')
 unhandled_keywords_list = st.text_input("Keywords to extract:", ','.join(default_keywords_list)).split(',')
@@ -189,7 +188,8 @@ uid_to_embed = []
 extracted_dict = dict()
 n = 5
 if st.button("Start"):
-    
+    with open(roam_json) as f:
+        mygraph = json.load(f)
     uid_to_embed, extracted_dict = init_env(mygraph, unhandled_tag_white_list, unhandled_tag_black_list, unhandled_keywords_list, accumulated_extracted_dict)
     st.write(f"Need to get embeddings for {len(uid_to_embed)} uids ...")
     st.button("Just do it!", on_click=proceed_with_uid_embedding, args=[mystr, n, uid_to_embed, extracted_dict, local_models, uid_vec_cache])
